@@ -1,0 +1,6 @@
+{
+  "name": "WebSocket Chat",
+  "description": "Node JS server example fir heroku",
+  "repository": "https://github.com/SystemBlad/node-js-chat-server",
+  "keywords": ["node", "websocket", "chat"]
+}
