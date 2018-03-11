@@ -43,7 +43,9 @@ wss.on('connection', (ws, req) => {
     var userColor = false;
 
     if (history.length > 0) {
-        ws.send(JSON.stringify( { type: 'history', data: history} ));
+        if(ws.readyState == 1){
+            ws.send(JSON.stringify( { type: 'history', data: history} ));
+        }
     }
     ws.on('close', () => console.log('Client disconnected: '  + clientKey ));
     ws.on('message', function incoming(message) {
@@ -53,7 +55,9 @@ wss.on('connection', (ws, req) => {
             userName = htmlEntities(message);
             // get random color and send it back to the user
             userColor = colors.shift();
-            ws.send(JSON.stringify({ type:'color', data: userColor }));
+            if(ws.readyState == 1) {
+                ws.send(JSON.stringify({type: 'color', data: userColor}));
+            }
             console.log((new Date()) + ' User is known as: ' + userName
                 + ' with ' + userColor + ' color.');
 
@@ -74,7 +78,9 @@ wss.on('connection', (ws, req) => {
             // broadcast message to all connected clients
             var json = JSON.stringify({ type:'message', data: obj });
             for (var i=0; i < clients.length; i++) {
-                clients[i].send(json);
+                if(clients[i].readyState == 1) {
+                    clients[i].send(json);
+                }
             }
         }
     });
